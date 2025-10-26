@@ -478,6 +478,32 @@ require('lazy').setup({
     },
   },
 
+  { -- LazyGit in a floating window with handy commands
+    'kdheepak/lazygit.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    keys = {
+      { '<leader>gg', '<cmd>LazyGit<CR>', desc = 'LazyGit (repo)' },
+      { '<leader>gf', '<cmd>LazyGitCurrentFile<CR>', desc = 'LazyGit (current file)' },
+    },
+    init = function()
+      -- Tweak floating window sizing if desired
+      vim.g.lazygit_floating_window_scaling_factor = 0.9
+    end,
+    config = function()
+      -- Load Telescope extension if available (provides :Telescope lazygit)
+      pcall(function()
+        require('telescope').load_extension 'lazygit'
+      end)
+    end,
+  },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -538,6 +564,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
+        { '<leader>g', group = '[G]it' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>b', group = '[B]uffer' },
